@@ -76,16 +76,25 @@ class AuthController extends Controller
 	//update user
 	public function update(Request $request)
 	{
+
+		// return response([
+		// 	"message" => auth()->user(),
+
+		// ]);
+
 		$attr = $request->validate([
-			'name' => 'required|string',
+			'name' => 'required',
 		]);
+
+		// $attr['name'] = $request->name;
 
 		$user = auth()->user();
 
 		// $attrs['image'] = $this->saveImage($request->image, 'profiles');
 
 		if ($request->hasFile('image')) {
-			$attrs['image'] = $request->file('image')->store('profiless', 'public');
+			$imagePath = $request->file('image')->store('profiles', 'public');
+			$attr['image'] = $imagePath;
 		}
 
 		$user->update($attr);
